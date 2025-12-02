@@ -25,6 +25,7 @@ dependencies {
     implementation(libs.guava)
 
     implementation("com.squareup.okhttp3:okhttp:5.3.2")
+    implementation("com.google.code.gson:gson:2.13.2")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -36,7 +37,11 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "javaprojects.App"
+    mainClass = "CubeTracker.App"
+}
+
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
 }
 
 tasks.named<Test>("test") {
