@@ -11,7 +11,7 @@ public class WcaClient {
   private static final Gson gson = new Gson();
   private static final String URL = "https://raw.githubusercontent.com/robiningelbrecht/wca-rest-api/master/api";
 
-  public void personData(String wcaID) throws IOException {
+  public Person personbyID(String wcaID) throws IOException {
 
     Request request = new Request.Builder()
         .url(URL + "/persons/" + wcaID + ".json")
@@ -21,16 +21,39 @@ public class WcaClient {
       if (!response.isSuccessful())
         throw new IOException("Unexpected Code" + response);
 
-      // Headers responseHeaders = response.headers();
-      // for (int i = 0; i < responseHeaders.size(); i++) {
-      // System.out.println(responseHeaders.name(i) + ": " +
-      // responseHeaders.value(i));
-      // }
-
       Person person = gson.fromJson(response.body().string(), Person.class);
-      System.out.println(person.getCountry() + "   " + person.getid() + "   " + person.getname());
+      return person;
     } catch (IOException err) {
       System.out.println("Error Occured: " + err.getMessage());
+    }
+    return new Person();
+  }
+
+  public void listCubers(int num, Boolean isSingle) throws IOException {
+    if (isSingle) {
+      Request request = new Request.Builder().url(URL + "/rank/world/single/333.json").build();
+      Response response = client.newCall(request).execute();
+      RankResponse page = gson.fromJson(response.body().string(), RankResponse.class);
+      Rank[] ranks = page.getItems();
+      System.out.println("3x3 Singles World Rankings-----------------------------------------------------------");
+      for (int i = 0; i < num; i++) {
+        String wcaID = ranks[i].getPersonId();
+        System.out.println(
+            "Rank " + (i + 1) + ": " + personbyID(wcaID).getname() + "-------" + "Best time: " + ranks[i].getBest()
+                + " seconds");
+      }
+    } else {
+      Request request = new Request.Builder().url(URL + "/rank/world/average/333.json").build();
+      Response response = client.newCall(request).execute();
+      RankResponse page = gson.fromJson(response.body().string(), RankResponse.class);
+      Rank[] ranks = page.getItems();
+      System.out.println("3x3 Average World Rankings-----------------------------------------------------------");
+      for (int i = 0; i < num; i++) {
+        String wcaID = ranks[i].getPersonId();
+        System.out.println(
+            "Rank " + (i + 1) + ": " + personbyID(wcaID).getname() + "-------" + "Best average: " + ranks[i].getBest()
+                + " seconds");
+      }
     }
 
   }
@@ -48,4 +71,5 @@ public class WcaClient {
       System.out.println("Error: " + err.getMessage());
     }
   }
+
 }

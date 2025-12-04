@@ -16,11 +16,14 @@ public class App {
 
     public static void main(String[] args) throws IOException {
         WcaClient client = new WcaClient();
-        // Scanner myObj = new Scanner(System.in);
-        // System.out.println("Enter WCA ID for competitor information:");
-        // String wcaID = myObj.nextLine();
-        // client.personData(wcaID);
-        // myObj.close();
-        client.listContinents();
+        Scanner myObj = new Scanner(System.in);
+        System.out.println("Choose a function of CubeTracker");
+        System.out.println("[1] Get a WCA competitors information");
+        System.out.println("[2] Get the top n 3x3 cubers");
+        String usertext = myObj.nextLine();
+        if (usertext.equals("2")) {
+            client.listCubers(10, false);
+        }
+        myObj.close();
     }
 }
