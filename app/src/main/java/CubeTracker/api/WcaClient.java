@@ -9,67 +9,66 @@ import CubeTracker.models.*;
 public class WcaClient {
   private static final OkHttpClient client = new OkHttpClient();
   private static final Gson gson = new Gson();
-  private static final String URL = "https://raw.githubusercontent.com/robiningelbrecht/wca-rest-api/master/api";
+  private static final String BASE_URL = "https://raw.githubusercontent.com/robiningelbrecht/wca-rest-api/master/api";
 
-  public Person personbyID(String wcaID) throws IOException {
-
+  public Person getPersonById(String wcaID) throws IOException {
     Request request = new Request.Builder()
-        .url(URL + "/persons/" + wcaID + ".json")
+        .url(BASE_URL + "/persons/" + wcaID + ".json")
         .build();
 
     try (Response response = client.newCall(request).execute()) {
-      if (!response.isSuccessful())
-        throw new IOException("Unexpected Code" + response);
-
-      Person person = gson.fromJson(response.body().string(), Person.class);
-      return person;
-    } catch (IOException err) {
-      System.out.println("Error Occured: " + err.getMessage());
+      if (!response.isSuccessful()) {
+        throw new IOException("Person not found: " + wcaID);
+      }
+      return gson.fromJson(response.body().string(), Person.class);
     }
-    return new Person();
   }
 
-  public void listCubers(int num, Boolean isSingle) throws IOException {
-    if (isSingle) {
-      Request request = new Request.Builder().url(URL + "/rank/world/single/333.json").build();
-      Response response = client.newCall(request).execute();
-      RankResponse page = gson.fromJson(response.body().string(), RankResponse.class);
-      Rank[] ranks = page.getItems();
-      System.out.println("3x3 Singles World Rankings-----------------------------------------------------------");
-      for (int i = 0; i < num; i++) {
-        String wcaID = ranks[i].getPersonId();
-        System.out.println(
-            "Rank " + (i + 1) + ": " + personbyID(wcaID).getName() + "-------" + "Best time: " + ranks[i].getBest()
-                + " seconds");
-      }
-    } else {
-      Request request = new Request.Builder().url(URL + "/rank/world/average/333.json").build();
-      Response response = client.newCall(request).execute();
-      RankResponse page = gson.fromJson(response.body().string(), RankResponse.class);
-      Rank[] ranks = page.getItems();
-      System.out.println("3x3 Average World Rankings-----------------------------------------------------------");
-      for (int i = 0; i < num; i++) {
-        String wcaID = ranks[i].getPersonId();
-        System.out.println(
-            "Rank " + (i + 1) + ": " + personbyID(wcaID).getName() + "-------" + "Best average: " + ranks[i].getBest()
-                + " seconds");
-      }
-    }
+  public Rank[] getRankings(String eventId, boolean isSingle, int limit) throws IOException {
+    String rankType = isSingle ? "single" : "average";
+    String url = BASE_URL + "/rank/world/" + rankType + "/" + eventId + ".json";
 
-  }
-
-  public void listContinents() throws IOException {
-    Request request = new Request.Builder().url(URL + "/continents.json").build();
+    Request request = new Request.Builder().url(url).build();
 
     try (Response response = client.newCall(request).execute()) {
-      if (!response.isSuccessful())
-        throw new IOException("Unexpected Code" + response);
+      if (!response.isSuccessful()) {
+        throw new IOException("Failed to fetch rankings");
+      }
+      RankResponse rankResponse = gson.fromJson(response.body().string(), RankResponse.class);
+      Rank[] allRanks = rankResponse.getItems();
 
-      ContinentResponse continents = gson.fromJson(response.body().string(), ContinentResponse.class);
-      System.out.println(continents.getPagination() + "   " + continents.getTotal() + "   " + continents.getItems()[1]);
-    } catch (IOException err) {
-      System.out.println("Error: " + err.getMessage());
+      int count = Math.min(limit, allRanks.length);
+      Rank[] result = new Rank[count];
+      System.arraycopy(allRanks, 0, result, 0, count);
+      return result;
     }
   }
 
+  public Event[] getEvents() throws IOException {
+    Request request = new Request.Builder()
+        .url(BASE_URL + "/events.json")
+        .build();
+
+    try (Response response = client.newCall(request).execute()) {
+      if (!response.isSuccessful()) {
+        throw new IOException("Failed to fetch events");
+      }
+      EventResponse eventResponse = gson.fromJson(response.body().string(), EventResponse.class);
+      return eventResponse.getItems();
+    }
+  }
+
+  public Continent[] getContinents() throws IOException {
+    Request request = new Request.Builder()
+        .url(BASE_URL + "/continents.json")
+        .build();
+
+    try (Response response = client.newCall(request).execute()) {
+      if (!response.isSuccessful()) {
+        throw new IOException("Failed to fetch continents");
+      }
+      ContinentResponse continentResponse = gson.fromJson(response.body().string(), ContinentResponse.class);
+      return continentResponse.getItems();
+    }
+  }
 }

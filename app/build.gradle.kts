@@ -8,6 +8,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 repositories {
@@ -35,12 +36,22 @@ java {
     }
 }
 
-application {
-    // Define the main class for the application.
-    mainClass = "CubeTracker.App"
+javafx {
+    version = "21.0.2"
+    modules = listOf("javafx.controls", "javafx.fxml")
 }
 
-tasks.named<JavaExec>("run") {
+application {
+    // Define the main class for the application (JavaFX GUI).
+    mainClass = "CubeTracker.CubeTrackerApp"
+}
+
+val mainSourceSet = sourceSets["main"]
+
+tasks.register<JavaExec>("runCli") {
+    description = "Run the CLI version of the application"
+    mainClass = "CubeTracker.App"
+    classpath = mainSourceSet.runtimeClasspath
     standardInput = System.`in`
 }
 

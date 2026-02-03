@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="CubeTracker.ui.controllers.MainController"
+            styleClass="root">
+
+    <!-- Sidebar Navigation -->
+    <left>
+        <VBox styleClass="sidebar" spacing="5">
+            <padding>
+                <Insets top="20" right="10" bottom="20" left="10"/>
+            </padding>
+
+            <Label text="CubeTracker" styleClass="app-title"/>
+
+            <Region VBox.vgrow="NEVER" prefHeight="20"/>
+
+            <Button fx:id="profileButton" text="Profile" onAction="#showProfile"
+                    styleClass="nav-button" maxWidth="Infinity"/>
+            <Button fx:id="rankingsButton" text="Rankings" onAction="#showRankings"
+                    styleClass="nav-button" maxWidth="Infinity"/>
+            <Button fx:id="eventsButton" text="Events" onAction="#showEvents"
+                    styleClass="nav-button" maxWidth="Infinity"/>
+            <Button fx:id="continentsButton" text="Continents" onAction="#showContinents"
+                    styleClass="nav-button" maxWidth="Infinity"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <Label text="WCA Data Explorer" styleClass="subtitle"/>
+        </VBox>
+    </left>
+
+    <!-- Main Content Area -->
+    <center>
+        <StackPane fx:id="contentArea" styleClass="content-area">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+        </StackPane>
+    </center>
+
+</BorderPane>

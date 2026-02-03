@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="CubeTracker.ui.controllers.ProfileController"
+      spacing="15" alignment="TOP_LEFT">
+
+    <Label text="Search Profile" styleClass="view-title"/>
+
+    <!-- Search Area -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="wcaIdField" promptText="Enter WCA ID (e.g., 2015PARK08)"
+                   prefWidth="250"/>
+        <Button fx:id="searchButton" text="Search" onAction="#search"/>
+        <ProgressIndicator fx:id="loadingIndicator" prefWidth="25" prefHeight="25"/>
+    </HBox>
+
+    <!-- Error Label -->
+    <Label fx:id="errorLabel" styleClass="error-label"/>
+
+    <!-- Results Box -->
+    <VBox fx:id="resultsBox" spacing="10" styleClass="results-box">
+        <padding>
+            <Insets top="15" right="15" bottom="15" left="15"/>
+        </padding>
+
+        <HBox spacing="10">
+            <Label text="Name:" styleClass="field-label"/>
+            <Label fx:id="nameLabel" styleClass="field-value"/>
+        </HBox>
+
+        <HBox spacing="10">
+            <Label text="WCA ID:" styleClass="field-label"/>
+            <Label fx:id="idLabel" styleClass="field-value"/>
+        </HBox>
+
+        <HBox spacing="10">
+            <Label text="Country:" styleClass="field-label"/>
+            <Label fx:id="countryLabel" styleClass="field-value"/>
+        </HBox>
+
+        <HBox spacing="10">
+            <Label text="Competitions:" styleClass="field-label"/>
+            <Label fx:id="competitionsLabel" styleClass="field-value"/>
+        </HBox>
+
+        <HBox spacing="10">
+            <Label text="Medals:" styleClass="field-label"/>
+            <Label fx:id="medalsLabel" styleClass="field-value"/>
+        </HBox>
+    </VBox>
+
+</VBox>

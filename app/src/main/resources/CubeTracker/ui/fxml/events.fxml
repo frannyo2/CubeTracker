@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="CubeTracker.ui.controllers.EventsController"
+      spacing="15" alignment="TOP_LEFT">
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="WCA Events" styleClass="view-title"/>
+        <ProgressIndicator fx:id="loadingIndicator" prefWidth="25" prefHeight="25"/>
+    </HBox>
+
+    <!-- Error Label -->
+    <Label fx:id="errorLabel" styleClass="error-label"/>
+
+    <!-- Events Table -->
+    <TableView fx:id="eventsTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="idColumn" text="ID" prefWidth="80"/>
+            <TableColumn fx:id="nameColumn" text="Name" prefWidth="200"/>
+            <TableColumn fx:id="formatColumn" text="Format" prefWidth="100"/>
+        </columns>
+    </TableView>
+
+</VBox>

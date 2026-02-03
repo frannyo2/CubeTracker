@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="CubeTracker.ui.controllers.RankingsController"
+      spacing="15" alignment="TOP_LEFT">
+
+    <Label text="3x3 World Rankings" styleClass="view-title"/>
+
+    <!-- Controls -->
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <HBox spacing="5" alignment="CENTER_LEFT">
+            <Label text="Type:"/>
+            <ComboBox fx:id="rankTypeCombo"/>
+        </HBox>
+
+        <HBox spacing="5" alignment="CENTER_LEFT">
+            <Label text="Limit:"/>
+            <Spinner fx:id="limitSpinner" prefWidth="80"/>
+        </HBox>
+
+        <Button fx:id="loadButton" text="Load" onAction="#loadRankings"/>
+        <ProgressIndicator fx:id="loadingIndicator" prefWidth="25" prefHeight="25"/>
+    </HBox>
+
+    <!-- Error Label -->
+    <Label fx:id="errorLabel" styleClass="error-label"/>
+
+    <!-- Rankings Table -->
+    <TableView fx:id="rankingsTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="rankColumn" text="Rank" prefWidth="60"/>
+            <TableColumn fx:id="nameColumn" text="Person ID" prefWidth="150"/>
+            <TableColumn fx:id="timeColumn" text="Time" prefWidth="100"/>
+        </columns>
+    </TableView>
+
+</VBox>
