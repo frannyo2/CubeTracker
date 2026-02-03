@@ -39,7 +39,7 @@ public class WcaClient {
       for (int i = 0; i < num; i++) {
         String wcaID = ranks[i].getPersonId();
         System.out.println(
-            "Rank " + (i + 1) + ": " + personbyID(wcaID).getname() + "-------" + "Best time: " + ranks[i].getBest()
+            "Rank " + (i + 1) + ": " + personbyID(wcaID).getName() + "-------" + "Best time: " + ranks[i].getBest()
                 + " seconds");
       }
     } else {
@@ -51,7 +51,7 @@ public class WcaClient {
       for (int i = 0; i < num; i++) {
         String wcaID = ranks[i].getPersonId();
         System.out.println(
-            "Rank " + (i + 1) + ": " + personbyID(wcaID).getname() + "-------" + "Best average: " + ranks[i].getBest()
+            "Rank " + (i + 1) + ": " + personbyID(wcaID).getName() + "-------" + "Best average: " + ranks[i].getBest()
                 + " seconds");
       }
     }

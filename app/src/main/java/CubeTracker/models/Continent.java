@@ -4,7 +4,7 @@ public class Continent {
   private String id;
   private String name;
 
-  public String getid() {
+  public String getId() {
     return id;
   }
 
